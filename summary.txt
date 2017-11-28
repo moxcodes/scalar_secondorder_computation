@@ -1,0 +1,82 @@
+This is a quick overview of the eight files you will find in this archive.
+
+Thanks for downloading! Feel free to email me at jem497@cornell.edu if you
+have any questions or suggestions for this computation.
+
+## scalar_computation_main.m ##
+
+Imports all the rest, then performs the computations described in the derivation
+section of the paper "Radiation reaction on a small charged body to second
+order". This involves using the retarded self field and the equations of motion
+to derive a cascaded ruleset and ultimately arrive to a set of perturbative
+equations of motion for the worldline, mass, and spin of a small charged body.
+
+## 3+1Utils.m ##
+
+This is a separate package for dealing with many of the general troubles I ran
+across when trying to perform a 3+1 split in xTensor.  The rough idea is that we
+want to be able to define a separate tangent space for the 4-index and the
+3-index, then associate them in a meaningful way. Many of the utilities have to
+do with dealing carefully with derivatives, and there is a separate construction
+for the family of tensors, the kronecker deltas.
+
+
+## Retarded3+1Coords.m ##
+
+A specific rules family for the retarded coordinates, documented well in Eric
+Poisson's Living reviews of relativity. This relies on the 3+1 split I construct
+in the previous part, and in particular, makes liberal use of kronecker deltas
+between the retarded coordinates and the 'frame' coordinates which carry an
+implicit contraction with the fermi-transported tetrad. Of particular interest
+are RetCanon and BasisCanon utility functions, which are canonicalization
+utilities. RetCanon will both canonicalize and substitute the retarded basis and
+metric values, BasisCanon will not substitute but will organized the kronecker
+deltas. BasisCanon has support for arguments to make it more safe for partial
+derivatives and/or subexpressions.
+
+## NullIntegration.m ##
+
+This carries the definition and utilities for integration along future null
+surfaces, and the 2-dimensional spherical boundary of a future null
+surface. This is performed often in the derivation, so utilities for
+appropriately commuting invariant tensors through the integrals and performing
+integration by parts are included.
+
+## sumrules.m ##
+
+This contains a brief definition of a critical utility that I've created - the
+sumrules. This allows a sum of terms to be extracted from a long expression
+which has Plus as the head without the standard mathematica pattern-matching
+combinatoric time scaling. Instead, this performs a linear search using
+MatchQ. The overhead is large for short expressions, but for expressions of at
+least ~10 terms, I've found the linear scaling takes over and sumrules performs
+far better than the mathematica native.
+
+## ScalarTensors.m ##
+
+Direct definitions and rules for the electromagnetic tensors used in this
+computation. Included also is a custum perturbation code that is a slimmed-down
+version of the xTensor perturbation evaluates more quickly. There is also a
+'Qerturb', a second index of perturbation, which is used in the code to
+represent an expansion in inverse-r most typically.
+
+## selfField.m ##
+
+This includes the computation of the retarded and advanced self fields to the
+order which they are required for the self-force computation.  In the current
+release, this still performs these computations on the fly, so the import step
+for this piece of the code is comparatively long.  This also generates the field
+strength tensor associated with the retarded field, and the regular (half
+retarded minus half advanced) field strength, and the stress energy tensor of
+the retarded-retarded piece.
+
+## scalarRuleGeneration ##
+
+This contains utilites for generating the cascaded rule sets that are necessary
+in the perturbative step of the computation. It includes both rule generation
+utilities for sumrules and standard single-term replacements (for which
+mathematica native matching works fine), as well as the heuristics for choosing
+the best term or set of terms to be placed on the 'left hand side' of those
+equations for this specific E&M computation.
+
+
